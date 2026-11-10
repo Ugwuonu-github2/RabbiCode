@@ -1,0 +1,382 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Dashboard | RabbiCode</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #172033;
+        }
+
+        header {
+            background: #10254a;
+            color: white;
+            padding: 24px 6%;
+        }
+
+        header h1 {
+            margin: 0 0 8px;
+            font-size: 26px;
+        }
+
+        header p {
+            margin: 0;
+            color: #dbe5f5;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: auto;
+            padding: 35px 6%;
+        }
+
+        .intro {
+            margin-bottom: 28px;
+        }
+
+        .intro h2 {
+            margin-bottom: 8px;
+        }
+
+        .intro p {
+            color: #64748b;
+            line-height: 1.7;
+        }
+
+        .notice {
+            padding: 13px 16px;
+            margin-bottom: 25px;
+            background: #e8f0ff;
+            border-left: 4px solid #2563eb;
+            border-radius: 5px;
+            color: #1746a2;
+            font-size: 14px;
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .kpi-card {
+            padding: 23px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+        }
+
+        .kpi-card p {
+            margin: 0 0 14px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .kpi-card h3 {
+            margin: 0;
+            font-size: 27px;
+            color: #1746a2;
+        }
+
+        .section-card {
+            margin-top: 28px;
+            padding: 25px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+        }
+
+        .section-card h2 {
+            margin-top: 0;
+            font-size: 20px;
+        }
+
+        .section-card p {
+            color: #64748b;
+            line-height: 1.7;
+        }
+
+        .insights-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.insight-card {
+    padding: 22px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+}
+
+.insight-card h3 {
+    margin-top: 0;
+    color: #1746a2;
+    font-size: 17px;
+}
+
+.insight-card p {
+    color: #64748b;
+    line-height: 1.7;
+    font-size: 14px;
+}
+
+@media (max-width: 850px) {
+    .insights-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+        .back-link {
+            display: inline-block;
+            margin-top: 28px;
+            color: #1746a2;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        @media (max-width: 850px) {
+            .kpi-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 23px;
+            }
+        }
+  </style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>RabbiCode | Sales Analytics</h1>
+        <p>Intelligent Data Solutions for Businesses</p>
+    </header>
+
+    <main>
+        <section class="intro">
+            <h2>Sales Performance Dashboard</h2>
+            <p>
+                Explore how sales data can help a business understand
+                revenue, orders, products, and customer performance.
+            </p>
+        </section>
+
+        <div class="notice">
+            Demonstration preview — the figures below are illustrative,
+            not actual client business results.
+        </div>
+
+        <section class="kpi-grid">
+            <div class="kpi-card">
+                <p>Total Revenue</p>
+                <h3>₦4.8M</h3>
+            </div>
+
+            <div class="kpi-card">
+                <p>Total Orders</p>
+                <h3>1,248</h3>
+            </div>
+
+            <div class="kpi-card">
+                <p>Units Sold</p>
+                <h3>3,672</h3>
+            </div>
+
+            <div class="kpi-card">
+                <p>Average Order Value</p>
+                <h3>₦3,846</h3>
+            </div>
+        </section>
+
+      
+<section class="section-card">
+    <h2>Monthly Sales Trends</h2>
+    <p>
+        Illustrative monthly revenue to demonstrate how RabbiCode
+        helps businesses track sales performance over time.
+    </p>
+
+    <div style="position: relative; height: 320px; width: 100%;">
+        <canvas id="salesTrendChart"></canvas>
+    </div>
+</section>
+
+
+<section class="section-card">
+    <h2>Top-Selling Products</h2>
+    <p>
+        This section will highlight the products generating
+        the most sales and help identify opportunities to
+        improve product performance.
+    </p>
+
+    <div style="position: relative; height: 320px; width: 100%;">
+        <canvas id="topProductsChart"></canvas>
+    </div>
+</section>
+
+<section class="section-card">
+    <h2>Business Insights</h2>
+    <p>
+        Key findings from the sales analysis and recommendations
+        to support better business decisions.
+    </p>
+
+    <div class="insights-grid">
+
+        <div class="insight-card">
+            <h3>Revenue Performance</h3>
+            <p>
+                Revenue reached its highest point in December,
+                suggesting strong sales momentum towards the
+                end of the year.
+            </p>
+        </div>
+
+        <div class="insight-card">
+            <h3>Product Performance</h3>
+            <p>
+                Product A generated the highest revenue among
+                the five products analysed, making it an important
+                contributor to overall sales.
+            </p>
+        </div>
+
+        <div class="insight-card">
+            <h3>Business Recommendation</h3>
+            <p>
+                Maintain adequate stock of high-performing
+                products while reviewing weaker products to
+                identify opportunities for improvement.
+            </p>
+        </div>
+
+    </div>
+</section>
+
+        <a class="back-link" href="/">← Back to RabbiCode Home</a>
+    </main>
+    
+<script>
+    const salesChart = document.getElementById('salesTrendChart');
+
+    new Chart(salesChart, {
+        type: 'line',
+        data: {
+            labels: [
+                'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+            ],
+            datasets: [{
+                label: 'Monthly Revenue (₦)',
+                data: [
+                    280000, 320000, 350000, 310000,
+                    390000, 420000, 400000, 460000,
+                    440000, 510000, 550000, 680000
+                ],
+                borderColor: '#2563eb',
+                backgroundColor: 'rgba(37, 99, 235, 0.12)',
+                borderWidth: 3,
+                fill: true,
+                tension: 0.3,
+                pointRadius: 4,
+                pointHoverRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return 'Revenue: ₦' +
+                                context.parsed.y.toLocaleString('en-NG');
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return '₦' + (value / 1000) + 'k';
+                        }
+                    }
+                }
+            }
+        }
+ 
+    });
+
+    const productsChart = document.getElementById('topProductsChart');
+
+    new Chart(productsChart, {
+        type: 'bar',
+        data: {
+            labels: [
+                'Product A',
+                'Product B',
+                'Product C',
+                'Product D',
+                'Product E'
+            ],
+            datasets: [{
+                label: 'Sales Revenue (₦)',
+                data: [850000, 720000, 610000, 480000, 350000],
+                backgroundColor: '#2563eb',
+                borderRadius: 5
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return 'Revenue: ₦' +
+                                context.parsed.x.toLocaleString('en-NG');
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return '₦' + (value / 1000) + 'k';
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>
